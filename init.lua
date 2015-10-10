@@ -1,4 +1,19 @@
--- Begin WiFi configuration
+-- Restore RGB
+
+if file.open("rgb", "r") then
+  R = tonumber(file.readline())
+  G = tonumber(file.readline())
+  B = tonumber(file.readline())
+  file.close()
+  pwm.setup(5, 100, R)
+  pwm.start(5)
+  pwm.setup(6, 100, G)
+  pwm.start(6)
+  pwm.setup(7, 100, B)
+  pwm.start(7)
+end
+
+-- -- Begin WiFi configuration
 
 local wifiConfig = {}
 
@@ -85,6 +100,22 @@ if (wifi.getmode() == wifi.STATION) or (wifi.getmode() == wifi.STATIONAP) then
           joinCounter = nil
           joinMaxAttempts = nil
           collectgarbage()
+
+          tmr.alarm(0, 5000, 1, function()
+            local r = pwm.getduty(5)
+            local g = pwm.getduty(6)
+            local b = pwm.getduty(7)
+            if R ~= r or G ~= g or B ~= b then
+              if file.open("rgb", "w") then
+                file.writeline(r) R=r
+                file.writeline(g) G=g
+                file.writeline(b) B=b
+                file.close()
+              end
+            end
+          end
+          )
+
        end
     end)
 end
