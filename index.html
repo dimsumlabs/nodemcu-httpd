@@ -55,8 +55,8 @@
 	    ].join('&');
 
 	    var req = new XMLHttpRequest();
-	    req.open("POST", url, true);
-	    req.send(params);
+	    req.open("POST", url + '?' + params, true);
+	    req.send();
 	    eventLocked = true;
 	    req.onreadystatechange = function() {
 		if(req.readyState == 4) {
