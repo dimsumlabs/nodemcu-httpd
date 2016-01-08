@@ -4,16 +4,17 @@ return function (connection, req)
      pwm.setduty(5, arg);
    end
 
-   local arg = tonumber(req:match("g=([0-9]+)"));
+   arg = tonumber(req:match("g=([0-9]+)"));
    if arg then
      pwm.setduty(6, arg);
    end
 
-   local arg = tonumber(req:match("b=([0-9]+)"));
+   arg = tonumber(req:match("b=([0-9]+)"));
    if arg then
      pwm.setduty(7, arg);
    end
 
    -- Send back JSON response.
-   connection:send("HTTP/1.0 200 OK\r\nContent-Type: application/json\r\nCache-Control: private, no-store\r\nConnection: close\r\n\r\n{'error':0, 'message':'OK'}", function() connection:close() end)
+   connection:send("HTTP/1.0 200 OK\r\nContent-Type: application/json\r\nCache-Control: private, no-store\r\nConnection: close\r\n\r\n{'error':0, 'message':'OK'}")
+   connection:close()
 end
