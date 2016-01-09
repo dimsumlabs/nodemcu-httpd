@@ -7,11 +7,19 @@
     <link rel="icon" sizes="82x99" href="http://www.dimsumlabs.com/wp-content/uploads/2014/08/logo_dsl_text_82x99.png">
   </head>
   <body style="margin: 0px; padding: 0px;">
-     <canvas id="colorspace">
-     </canvas>
+    <label><input type="checkbox" id="adc" value="adc" style="z-index: 1;"/>ADC</label>
+    <canvas id="colorspace">
+    </canvas>
   </body>
   <script type="text/javascript">
   (function (){
+    document.getElementById('adc').addEventListener('click', function(event) {
+      var req = new XMLHttpRequest();
+      var ms = event.target.checked ? 5 : 0;
+      req.open("POST", '/adc.lua?ms=' + ms, true);
+      req.send();
+    }, false);
+
     var canvas = document.getElementById('colorspace');
     var ctx = canvas.getContext('2d');
 
