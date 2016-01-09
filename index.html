@@ -14,8 +14,12 @@
   <script type="text/javascript">
   (function (){
     document.getElementById('adc').addEventListener('click', function(event) {
-      var req = new XMLHttpRequest();
+      event.target.disabled = true;
       var ms = event.target.checked ? 5 : 0;
+      var req = new XMLHttpRequest();
+      req.onreadystatechange = function() {
+        if (req.readyState == 4) event.target.disabled = false;
+      }
       req.open("POST", '/adc.lua?ms=' + ms, true);
       req.send();
     }, false);
@@ -59,13 +63,13 @@
       ].join('&');
       canSend = pending = false;
       var req = new XMLHttpRequest();
-      req.open("POST", '/rgb.lua?' + params, true);
-      req.send();
       req.onreadystatechange = function() {
         if (req.readyState == 4) {
           setTimeout(function() { if (pending) sendColour(); else canSend = true; }, 100);
         }
       }
+      req.open("POST", '/rgb.lua?' + params, true);
+      req.send();
     }
 
     function setColour(r, g, b) {
