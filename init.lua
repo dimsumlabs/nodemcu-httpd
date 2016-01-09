@@ -13,6 +13,20 @@ if file.open("rgb", "r") then
   pwm.start(7)
 end
 
+function saveColor()
+  local r = pwm.getduty(5)
+  local g = pwm.getduty(6)
+  local b = pwm.getduty(7)
+  if R ~= r or G ~= g or B ~= b then
+    if file.open("rgb", "w") then
+      file.writeline(r) R=r
+      file.writeline(g) G=g
+      file.writeline(b) B=b
+      file.close()
+    end
+  end
+end
+
 -- -- Begin WiFi configuration
 
 local wifiConfig = {}
@@ -62,13 +76,13 @@ collectgarbage()
 -- This only happens the first time afer the .lua files are uploaded.
 
 local compileAndRemoveIfNeeded = function(f)
-   if file.open(f) then
-      file.close()
-      print('Compiling:', f)
-      node.compile(f)
-      file.remove(f)
-      collectgarbage()
-   end
+  if file.open(f) then
+    file.close()
+    print('Compiling:', f)
+    node.compile(f)
+    file.remove(f)
+    collectgarbage()
+  end
 end
 
 local serverFiles = {'httpserver.lua'}
@@ -82,47 +96,34 @@ collectgarbage()
 -- Once the device is connected, you may start the HTTP server.
 
 if (wifi.getmode() == wifi.STATION) or (wifi.getmode() == wifi.STATIONAP) then
-    local joinCounter = 0
-    local joinMaxAttempts = 5
-    tmr.alarm(0, 3000, 1, function()
-       local ip = wifi.sta.getip()
-       if ip == nil and joinCounter < joinMaxAttempts then
-          print('Connecting to WiFi Access Point ...')
-          joinCounter = joinCounter +1
-       else
-          if joinCounter == joinMaxAttempts then
-             print('Failed to connect to WiFi Access Point.')
-          else
-            print('IP: ',ip)
-            dofile("httpserver.lc")(80)
-          end
-          tmr.stop(0)
-          joinCounter = nil
-          joinMaxAttempts = nil
-          collectgarbage()
+  local joinCounter = 0
+  local joinMaxAttempts = 5
+  tmr.alarm(0, 3000, 1, function()
+    local ip = wifi.sta.getip()
+    if ip == nil and joinCounter < joinMaxAttempts then
+      print('Connecting to WiFi Access Point ...')
+      joinCounter = joinCounter +1
+    else
+      if joinCounter == joinMaxAttempts then
+         print('Failed to connect to WiFi Access Point.')
+      else
+        print('IP: ',ip)
+        dofile("httpserver.lc")(80)
+      end
+      tmr.stop(0)
+      joinCounter = nil
+      joinMaxAttempts = nil
+      collectgarbage()
 
-          tmr.alarm(0, 5000, 1, function()
-            local r = pwm.getduty(5)
-            local g = pwm.getduty(6)
-            local b = pwm.getduty(7)
-            if R ~= r or G ~= g or B ~= b then
-              if file.open("rgb", "w") then
-                file.writeline(r) R=r
-                file.writeline(g) G=g
-                file.writeline(b) B=b
-                file.close()
-              end
-            end
-          end
-          )
-
-       end
-    end)
+      tmr.alarm(0, 5000, 1, saveColor)
+    end
+  end
+  )
 end
 
 -- Uncomment to automatically start the server in port 80
 if (not not wifi.sta.getip()) or (not not wifi.ap.getip()) then
-    --dofile("httpserver.lc")(80)    
+  --dofile("httpserver.lc")(80)
 end
 
 function ls()
