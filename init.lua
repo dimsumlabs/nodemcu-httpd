@@ -5,7 +5,8 @@ if file.open("rgb", "r") then
   G = tonumber(file.readline())
   B = tonumber(file.readline())
   file.close()
-  if R == 0 and G == 0 and G == 0 then R=255 G=255 B=255 end
+  -- Do not go "back to black"; go to white instead
+  if R == 1023 and G == 1023 and B == 1023 then R=0 G=0 B=0 end
   pwm.setup(5, 100, R)
   pwm.start(5)
   pwm.setup(6, 100, G)
