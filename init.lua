@@ -7,11 +7,11 @@ if file.open("rgb", "r") then
   file.close()
   -- Do not go "back to black"; go to white instead
   if R == 1023 and G == 1023 and B == 1023 then R=0 G=0 B=0 end
-  pwm.setup(5, 100, R)
+  pwm.setup(5, 191, R)
   pwm.start(5)
-  pwm.setup(6, 100, G)
+  pwm.setup(6, 193, G)
   pwm.start(6)
-  pwm.setup(7, 100, B)
+  pwm.setup(7, 197, B)
   pwm.start(7)
 end
 
