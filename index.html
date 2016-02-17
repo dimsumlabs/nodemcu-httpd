@@ -102,7 +102,7 @@
 
     canvas.addEventListener('mousewheel', function(event) {
       var delta = Math.min(1, Math.max(-1, event.wheelDelta || -event.detail));
-      setColour(rr + delta, gg + delta, bb + delta);
+      setColour(rr - delta, gg - delta, bb - delta);
       event.preventDefault();
       return false;
     }, false);
