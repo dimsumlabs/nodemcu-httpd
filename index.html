@@ -7,6 +7,10 @@
     <link rel="icon" sizes="82x99" href="http://www.dimsumlabs.com/wp-content/uploads/2014/08/logo_dsl_text_82x99.png">
   </head>
   <body style="margin: 0px; padding: 0px;">
+    <select id="host">
+      <option value="helios.lan">Front (window)</option>
+      <option value="helios2.lan">Back (screen)</option>
+    </select>
     <label><input type="checkbox" id="adc" value="adc"/>ADC</label>
     <canvas style="position: absolute; top: 0; left: 0; z-index: -1" id="colorspace">
     </canvas>
@@ -14,6 +18,10 @@
   </body>
   <script type="text/javascript">
   (function (){
+    document.getElementById('host').selectedIndex = location.hostname.lastIndexOf("helios2") === 0 ? 1 : 0;
+    document.getElementById('host').addEventListener('change', function(event) {
+      location.hostname = event.target.value;
+    });
     document.getElementById('adc').addEventListener('click', function(event) {
       event.target.disabled = true;
       var ms = event.target.checked ? 5 : 0;
