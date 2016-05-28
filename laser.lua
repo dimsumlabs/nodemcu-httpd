@@ -1,7 +1,7 @@
 -- Configure LASER control pin
 gpio.mode(1, gpio.OUTPUT)
 
-local rfid = "unknown"
+local rfid
 
 local function laseron()
   print("laser on");
@@ -12,14 +12,17 @@ local function laseroff()
   gpio.write(1, gpio.LOW)
 
   -- send OFF time to server
-  local connection = net.createConnection(net.TCP, 0)
-  local function onconnect(connection)
-    connection:send("GET /api.php?off=1&group=laser&rfid="..rfid.." HTTP/1.1\r\nHost: door\r\nConnection: close\r\n\r\n")
-    connection:close()
-    connection = nil
+  if rfid ~= nil then
+    local connection = net.createConnection(net.TCP, 0)
+    local function onconnect(connection)
+      connection:send("GET /api.php?off=1&group=laser&rfid="..rfid.." HTTP/1.1\r\nHost: door\r\nConnection: close\r\n\r\n")
+      connection:close()
+      connection = nil
+      rfid = nil
+    end
+    connection:on("connection", onconnect)
+    connection:connect(80, "door")
   end
-  connection:on("connection", onconnect)
-  connection:connect(80, "door")
 end
 laseroff()
 
@@ -30,11 +33,13 @@ gpio.trig(2, "up", laseroff)
 local function onrfid(data)
   local card = data:reverse():sub(2)
   local salt = "d51e10354f570d35a54d2bc2c01f5fcb8725fb0bf6a58c7db02c5379f81a8a76"
-  rfid = crypto.toHex(crypto.hash("sha256",crypto.toHex(crypto.hash("sha256",card))..salt))
-  print(rfid)
-  if rfid == "5860f03f58d8b64a9f597dec1244ab2ff5d2f615791008b6a88a533b9436be10" then
+  local r = crypto.toHex(crypto.hash("sha256",crypto.toHex(crypto.hash("sha256",card))..salt))
+  print(r)
+  if r == "5860f03f58d8b64a9f597dec1244ab2ff5d2f615791008b6a88a533b9436be10" then
     laseron()
-  else
+  else if rfid ~= r then
+    rfid = r
+
     -- Query the server for permission
     local connection = net.createConnection(net.TCP, 0)
 

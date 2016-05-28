@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head>
+<script>
+function onload() {
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "stat.lua", true);
+	xhr.onreadystatechange = function() {
+	  if (xhr.readyState == 4) {
+	    var o = document.getElementById("status");
+	    o.innerText = xhr.responseText=="1"?"ON":"OFF";
+            window.setTimeout(onload, 500);
+	  }
+	}
+	xhr.send("");
+}
+window.addEventListener("load", onload);
+</script>
+</head><body>
+The laser is <span id="status">...</span>
+</body>
+</html>
