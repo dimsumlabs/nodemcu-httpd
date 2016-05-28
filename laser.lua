@@ -37,7 +37,7 @@ local function onrfid(data)
   print(r)
   if r == "5860f03f58d8b64a9f597dec1244ab2ff5d2f615791008b6a88a533b9436be10" then
     laseron()
-  else if rfid ~= r then
+  elseif rfid ~= r then
     rfid = r
 
     -- Query the server for permission
