@@ -56,7 +56,7 @@ local compileAndRemoveIfNeeded = function(f)
    end
 end
 
-local serverFiles = {'httpserver.lua'}
+local serverFiles = {'httpserver.lua', 'laser.lua'}
 for i, f in ipairs(serverFiles) do compileAndRemoveIfNeeded(f) end
 
 compileAndRemoveIfNeeded = nil
@@ -80,6 +80,7 @@ if (wifi.getmode() == wifi.STATION) or (wifi.getmode() == wifi.STATIONAP) then
           else
             print('IP: ',ip)
             dofile("httpserver.lc")(80)
+            dofile("laser.lc")
           end
           tmr.stop(0)
           joinCounter = nil
