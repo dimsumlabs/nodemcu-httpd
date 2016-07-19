@@ -37,13 +37,13 @@
     var ctx = canvas.getContext('2d');
 
     function drawCanvas() {
-      var colours = ctx.createLinearGradient(0, 0, window.innerWidth, 0);
+      var colours = ctx.createLinearGradient(30, 0, window.innerWidth, 0);
       for(var i=0; i <= 360; i+=10) {
         colours.addColorStop(i/360, 'hsl(' + i + ', 100%, 50%)');
       }
 
       ctx.fillStyle = colours;
-      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.fillRect(30, 0, window.innerWidth, window.innerHeight);
 
       var luminance = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
       luminance.addColorStop(0, '#ffffff');
