@@ -87,12 +87,20 @@
       var luminance = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
       luminance.addColorStop(0, '#ffffff');
       luminance.addColorStop(0.05, '#ffffff');
+      luminance.addColorStop(0.5, 'rgba(255,255,255,0)');
       luminance.addColorStop(0.5, 'rgba(0,0,0,0)');
       luminance.addColorStop(0.95,  '#000000');
       luminance.addColorStop(1,  '#000000');
-
+      
       ctx.fillStyle = luminance;
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      
+      var greyscale = ctx.createLinearGradient(0, 30, 0, ctx.canvas.height);
+      greyscale.addColorStop(0, '#ffffff');
+      greyscale.addColorStop(1,  '#000000');
+      
+      ctx.fillStyle = greyscale;
+      ctx.fillRect(0, 0, 30, ctx.canvas.height);
     }
 
     var canSend = true;
