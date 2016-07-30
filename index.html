@@ -19,9 +19,10 @@
   </body>
   <script type="text/javascript">
   (function (){
+    var host = location.hostname;
     document.getElementById('host').selectedIndex = location.hostname.lastIndexOf("helios2") === 0 ? 1 : 0;
     document.getElementById('host').addEventListener('change', function(event) {
-      location.hostname = event.target.value;
+      host = event.target.value;
     });
     document.getElementById('adc').addEventListener('click', function(event) {
       event.target.disabled = true;
@@ -86,7 +87,7 @@
           setTimeout(function() { if (pending) sendColour(); else canSend = true; }, 100);
         }
       }
-      req.open("POST", '/rgb.lua?' + params, true);
+      req.open("POST", '//'+host+'/rgb.lua?' + params, true);
       req.send();
     }
 
