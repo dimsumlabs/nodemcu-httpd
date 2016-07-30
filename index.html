@@ -4,44 +4,8 @@
     <title>DSL lights</title>
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" sizes="82x99" href="http://www.dimsumlabs.com/wp-content/uploads/2014/08/logo_dsl_text_82x99.png">
-    <style>
-		
-		body{
-			margin: 0px;
-			padding: 0px;
-			overflow: hidden;
-			
-			/* To avoid annoying selection when dragging */
-			user-select: none;
-			-moz-user-select: none;
-			-webkit-user-select: none;
-			-ms-user-select: none;
-		}
-		
-		#githubLink{
-			position: absolute;
-			top: 130px;
-			right: -20px;
-			border: 0px;
-			transform: rotateZ(45deg);
-			transform-origin: right bottom;
-			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-			display: block;
-		}
-		
-		#githubLink > img{
-			display: block;
-		}
-		
-		#colorspace{
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: -1;
-		}
-		
-    </style>
+    <link rel="icon" sizes="82x99" href="http://www.dimsumlabs.com/wp-content/uploads/2014/08/logo_dsl_text_82x99.png"/>
+    <link rel="stylesheet" href="gh-fork-ribbon.css" />
   </head>
   <body>
     <select id="host">
@@ -51,10 +15,8 @@
     <label><input type="checkbox" id="adc" value="adc">ADC</label>
     <canvas id="colorspace" width="1362" height="680">
     </canvas>
-    <a id="githubLink" href="https://github.com/dimsumlabs/nodemcu-httpd/tree/lights">
-		<img id="githubImg" src="./forkme.svg" alt="Fork me on GitHub">
-	</a>
-  
+    <a class="github-fork-ribbon right-top" href="https://github.com/dimsumlabs/nodemcu-httpd/tree/lights" title="Fork me on GitHub">Fork me on GitHub</a>
+  </body>
   <script type="text/javascript">
   (function (){
     document.getElementById('host').selectedIndex = location.hostname.lastIndexOf("helios2") === 0 ? 1 : 0;
@@ -91,14 +53,14 @@
       luminance.addColorStop(0.5, 'rgba(0,0,0,0)');
       luminance.addColorStop(0.95,  '#000000');
       luminance.addColorStop(1,  '#000000');
-      
+
       ctx.fillStyle = luminance;
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      
+
       var greyscale = ctx.createLinearGradient(0, 30, 0, ctx.canvas.height);
       greyscale.addColorStop(0, '#ffffff');
       greyscale.addColorStop(1,  '#000000');
-      
+
       ctx.fillStyle = greyscale;
       ctx.fillRect(0, 0, 30, ctx.canvas.height);
     }
