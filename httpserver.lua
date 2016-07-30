@@ -112,6 +112,9 @@ return function (port)
           end
           connection:on("sent", onSent)
           connection:send("HTTP/1.1 200 OK\r\nConnection: close\r\n\r\n")
+        elseif method == "OPTIONS" then
+          connection:send("HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Allow-Methods: POST,OPTIONS\r\nConnection: close\r\n\r\n")
+          connection:close()
         else
           connection:send("HTTP/1.1 501 Not Implemented\r\nConnection: close\r\n\r\n")
           connection:close()
