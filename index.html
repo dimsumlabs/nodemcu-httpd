@@ -5,17 +5,56 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" sizes="82x99" href="http://www.dimsumlabs.com/wp-content/uploads/2014/08/logo_dsl_text_82x99.png">
+    <style>
+		
+		body{
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+			
+			/* To avoid annoying selection when dragging */
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		
+		#githubLink{
+			position: absolute;
+			top: 130px;
+			right: -20px;
+			border: 0px;
+			transform: rotateZ(45deg);
+			transform-origin: right bottom;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+			display: block;
+		}
+		
+		#githubLink > img{
+			display: block;
+		}
+		
+		#colorspace{
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: -1;
+		}
+		
+    </style>
   </head>
-  <body style="margin: 0px; padding: 0px;">
+  <body>
     <select id="host">
       <option value="helios.lan">Front (window)</option>
       <option value="helios2.lan">Back (screen)</option>
     </select>
-    <label><input type="checkbox" id="adc" value="adc"/>ADC</label>
-    <canvas style="position: absolute; top: 0; left: 0; z-index: -1" id="colorspace">
+    <label><input type="checkbox" id="adc" value="adc">ADC</label>
+    <canvas id="colorspace" width="1362" height="680">
     </canvas>
-    <a href="https://github.com/dimsumlabs/nodemcu-httpd/tree/lights"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-  </body>
+    <a id="githubLink" href="https://github.com/dimsumlabs/nodemcu-httpd/tree/lights">
+		<img id="githubImg" src="./forkme.svg" alt="Fork me on GitHub">
+	</a>
+  
   <script type="text/javascript">
   (function (){
     document.getElementById('host').selectedIndex = location.hostname.lastIndexOf("helios2") === 0 ? 1 : 0;
