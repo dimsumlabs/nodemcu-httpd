@@ -7,20 +7,23 @@
     <link rel="icon" sizes="82x99" href="http://www.dimsumlabs.com/wp-content/uploads/2014/08/logo_dsl_text_82x99.png"/>
     <link rel="stylesheet" href="gh-fork-ribbon.css" />
   </head>
-  <body>
+  <body style="margin:0">
+    <canvas id="colorspace" width="1362" height="680"></canvas>
+    <div style="position:absolute;top:0;left:0">
     <select id="host">
       <option value="helios.lan">Front (window)</option>
       <option value="helios2.lan">Back (screen)</option>
+      <option value="helios.lan helios2.lan">Both</option>
     </select>
-    <label><input type="checkbox" id="adc" value="adc">ADC</label>
-    <canvas id="colorspace" width="1362" height="680">
-    </canvas>
+    <input type="checkbox" id="adc" value="adc"><label for="adc">ADC</label>
+  </div>
     <a class="github-fork-ribbon right-top" href="https://github.com/dimsumlabs/nodemcu-httpd/tree/lights" title="Fork me on GitHub">Fork me on GitHub</a>
   </body>
   <script type="text/javascript">
   (function (){
     var host = location.hostname;
     document.getElementById('host').selectedIndex = location.hostname.lastIndexOf("helios2") === 0 ? 1 : 0;
+    document.getElementById('host').focus();
     document.getElementById('host').addEventListener('change', function(event) {
       host = event.target.value;
     });
@@ -31,7 +34,8 @@
       req.onreadystatechange = function() {
         if (req.readyState == 4) event.target.disabled = false;
       }
-      req.open("POST", '/adc.lua?ms=' + ms, true);
+      // Only helios.lan has ADC hooked up
+      req.open("POST", '//helios.lan/adc.lua?ms=' + ms, true);
       req.send();
     }, false);
 
@@ -81,14 +85,17 @@
         'b=' + colourCorrect(bb)
       ].join('&');
       canSend = pending = false;
-      var req = new XMLHttpRequest();
-      req.onreadystatechange = function() {
-        if (req.readyState == 4) {
-          setTimeout(function() { if (pending) sendColour(); else canSend = true; }, 100);
+      var hosts = host.split(' ');
+      for (var i=0; i<hosts.length; ++i) {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+          if (req.readyState == 4) {
+            setTimeout(function() { if (pending) sendColour(); else canSend = true; }, 100);
+          }
         }
+        req.open("POST", '//'+hosts[i]+'/rgb.lua?' + params, true);
+        req.send();
       }
-      req.open("POST", '//'+host+'/rgb.lua?' + params, true);
-      req.send();
     }
 
     function setColour(r, g, b) {
