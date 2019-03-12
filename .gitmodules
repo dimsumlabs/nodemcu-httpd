@@ -1,3 +1,6 @@
 [submodule "nodemcu-uploader"]
 	path = nodemcu-uploader
 	url = https://github.com/kmpm/nodemcu-uploader.git
+[submodule "esptool"]
+	path = esptool
+	url = https://github.com/espressif/esptool.git
