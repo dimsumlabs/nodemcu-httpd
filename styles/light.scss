@@ -1,0 +1,89 @@
+@import 'variables';
+@import 'range-slider';
+body {
+  background: black;
+  font-family: $body-font;
+  font-size: $body-font-size;
+  color: $mid-gray;
+}
+
+h1 {
+  text-transform: lowercase;
+  font-family: $heading-font;
+  font-size: $heading-font-size;
+  color: $light-gray;
+  margin: 0;
+}
+
+h2 {
+  @extend h1;
+  font-size: 2.0rem;
+}
+
+button {
+  border: none;
+  color: $light-gray;
+  font-family: $body-font;
+  font-size: $body-font-size;
+  padding: 0.3em 1.0em;
+  margin: 0.2em;
+  &:focus {
+    outline: none;
+  }
+}
+
+canvas {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85%;
+  position: absolute;
+}
+
+.toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 15%;
+  width: 100%;
+  padding-bottom: 0.6rem;
+}
+
+.title-section {
+  float: left;
+  width: 20rem;
+  bottom: 0;
+  display: inline-block;
+  & > * {
+    display: inline-block;
+  }
+
+  h1 {
+    padding: 0 1.2rem;
+    margin-left: 1.2rem;
+  }
+}
+
+.position-select {
+  button {
+    width: 7em;
+    display: block;
+    background: $dark-gray;
+  &:disabled {
+    color: $white-gray;
+    background: $mid-gray;
+  }
+  }
+}
+
+#btn-1 {
+  border-radius: 0.5em 0.5em 0 0;
+}
+#btn-2 {
+  border-radius: 0 0 0.5em 0.5em;
+}
+
+.slider-section {
+  padding: 0rem 3rem;
+  margin-left: 20rem;
+}
