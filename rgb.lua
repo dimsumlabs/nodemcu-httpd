@@ -16,6 +16,11 @@ return function (connection, req)
     setduty(7, arg)
   end
 
+  arg = tonumber(req:match("w=([0-9]+)"))
+  if arg then
+    setduty(2, arg)
+  end
+
   -- Send back JSON response.
   connection:on("sent", function(c)
       c:close()

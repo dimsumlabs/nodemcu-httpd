@@ -58,6 +58,12 @@ body {
 #blue::-moz-range-thumb {
   background: #0000FF;
 }
+#white::-webkit-slider-thumb {
+  background: #FFFFFF;
+}
+#white::-moz-range-thumb {
+  background: #FFFFFF;
+}
 .colorvalue {
   text-align: center;
 }
@@ -76,6 +82,10 @@ body {
            <input type="range" min="0" max="1023" value="199" class="slider" id="blue"/>
       </p>
       <div class="colorvalue">B: <span id="blue_val">X</span></div>
+      <p class="slidercontainer">
+           <input type="range" min="0" max="1023" value="199" class="slider" id="white"/>
+      </p>
+      <div class="colorvalue">W: <span id="white_val">X</span></div>
   </body>
   <script type="text/javascript">
   (function (){
@@ -85,6 +95,8 @@ body {
     var greenout = document.getElementById("green_val");
     var blueslider = document.getElementById("blue");
     var blueout = document.getElementById("blue_val");
+    var whiteslider = document.getElementById("white");
+    var whiteout = document.getElementById("white_val");
 
     var host = location.hostname;
     var canSend = false;
@@ -97,9 +109,11 @@ body {
             redslider.value = 1023 - rgb[0];
             greenslider.value = 1023 - rgb[1];
             blueslider.value = 1023 - rgb[2];
+            whiteslider.value = 1023 - rgb[3];
             redout.innerHTML = redslider.value;
             greenout.innerHTML = greenslider.value;
             blueout.innerHTML = blueslider.value;
+            whiteout.innerHTML = whiteslider.value;
             canSend = true;
         }
     }
@@ -113,7 +127,8 @@ body {
       var params = [
         'r=' + (1023-redslider.value),
         'g=' + (1023-greenslider.value),
-        'b=' + (1023-blueslider.value)
+        'b=' + (1023-blueslider.value),
+        'w=' + (1023-whiteslider.value)
       ].join('&');
       canSend = false;
       var req = new XMLHttpRequest();
@@ -144,6 +159,13 @@ body {
         blueout.innerHTML = this.value;
     }
     blueslider.onchange = function() {
+        sendColour();
+    }
+
+    whiteslider.oninput = function() {
+        whiteout.innerHTML = this.value;
+    }
+    whiteslider.onchange = function() {
         sendColour();
     }
 

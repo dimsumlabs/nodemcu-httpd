@@ -4,26 +4,34 @@ if file.open("rgb", "r") then
   R = tonumber(file.readline())
   G = tonumber(file.readline())
   B = tonumber(file.readline())
+  W = tonumber(file.readline())
   file.close()
+  -- Initialize W in case it didn't exist. This would happen in case the state file is of old version
+  if W==nil then W=1023 end
+
   -- Do not go "back to black"; go to white instead
-  if R == 1023 and G == 1023 and B == 1023 then R=0 G=0 B=0 end
+  if R == 1023 and G == 1023 and B == 1023 and W == 1023 then R=0 G=0 B=0 W=0 end
   pwm.setup(5, 191, R)
   pwm.start(5)
   pwm.setup(6, 193, G)
   pwm.start(6)
   pwm.setup(7, 197, B)
   pwm.start(7)
+  pwm.setup(2, 197, W)
+  pwm.start(2)
 end
 
 function saveColor()
   local r = pwm.getduty(5)
   local g = pwm.getduty(6)
   local b = pwm.getduty(7)
-  if R ~= r or G ~= g or B ~= b then
+  local w = pwm.getduty(2)
+  if R ~= r or G ~= g or B ~= b or W ~= w then
     if file.open("rgb", "w") then
       file.writeline(r) R=r
       file.writeline(g) G=g
       file.writeline(b) B=b
+      file.writeline(w) W=w
       file.close()
     end
   end
